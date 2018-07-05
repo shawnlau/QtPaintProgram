@@ -25,7 +25,9 @@ void MyCanvas::paintEvent(QPaintEvent *event){
         else
             m_displayImage = new QImage(temp->scaled((int)sRect.w,(int)sRect.h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
         painter.drawImage((int)sRect.x,(int)sRect.y,*m_displayImage);
+        delete temp;
     }
+
     delete m_displayImage;
 }
 void MyCanvas::keyPressEvent(QKeyEvent *event)
@@ -52,8 +54,7 @@ void MyCanvas::keyPressEvent(QKeyEvent *event)
                     static_cast<QWidget *>(parent())->showNormal();
                 break;
             case Qt::Key_B:
-                QPaintEvent *event = nullptr;
-                paintEvent(event);
+                update();
                 break;
         }
 
