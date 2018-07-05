@@ -2,32 +2,31 @@
 #include "mycanvas.h"
 #include <QDebug>
 #include <array>
-#include "myrectanglef.h"
 ViewArea::ViewArea(QWidget *parent, int mw, int mh) : QWidget(parent)
 {
     if(parent != nullptr){
         iWidth = mw;
         iHeight = mh;
-        m_imageRectF.resizeRect(mw,mh,MyRectangleF::TL);
-        m_focalRectF.resizeRect(parentWidget()->width(),parentWidget()->height(),MyRectangleF::TL);
+        m_imageRectF.setRect(0,0,mw,mh);
+        m_focalRectF.setRect(0,0,parentWidget()->width(),parentWidget()->height());
         zIndex = ZOOM1x;
         zoom = zoomLevels[zIndex];
-        m_focalRectF.moveRectC(m_imageRectF.centerX,m_imageRectF.centerY);
+        m_focalRectF.moveCenter(m_imageRectF.center());
         findScreenIntersections();
     }
 }
 
-MyRectangleF ViewArea::intersectRect()
+QRect ViewArea::intersectRect()
 {
-    return m_intersectRectF;
+    return m_intersectRectF.toRect();
 }
 
-MyRectangleF ViewArea::screenRect()
+QRect ViewArea::screenRect()
 {
-    return m_screenRectF;
+    return m_screenRectF.toRect();
 }
 void  ViewArea::center(){
-     m_focalRectF.moveRectC(m_imageRectF.centerX,m_imageRectF.centerY);
+     m_focalRectF.moveCenter(m_imageRectF.center());
      findScreenIntersections();
 }
 
@@ -77,9 +76,10 @@ void ViewArea::zoomToFit()
 
 void ViewArea::move(int x, int y, int px, int py)
 {
-    qreal cx = m_focalRectF.centerX - (x - px)/zoom;
-    qreal cy = m_focalRectF.centerY - (y - py)/zoom;
-    m_focalRectF.moveRectC(cx,cy);
+    QPointF c;
+    c.setX(m_focalRectF.center().x() - (x-px)/zoom );
+    c.setY(m_focalRectF.center().y() - (y-py)/zoom );
+    m_focalRectF.moveCenter(c);
     findScreenIntersections();
 }
 
@@ -91,38 +91,26 @@ void ViewArea::changeScreenSize()
 
 bool ViewArea::findScreenIntersections(){
      qreal offX = 0, offY=0;
-     if(m_focalRectF.x < 0) offX = -m_focalRectF.x * zoom;
-     if(m_focalRectF.y < 0) offY = -m_focalRectF.y * zoom;
-     if(m_imageRectF.findIntersection(&m_intersectRectF,&m_focalRectF)){
-          m_screenRectF.x = offX;
-          m_screenRectF.y = offY;
-          m_screenRectF.w =m_intersectRectF.w * zoom;
-          m_screenRectF.h = m_intersectRectF.h * zoom;
-          m_screenRectF.x2 = m_screenRectF.x+m_screenRectF.w-1;
-          m_screenRectF.y2 = m_screenRectF.y+m_screenRectF.h-1;
-          m_screenRectF.centerX = m_screenRectF.x + (m_screenRectF.w-1)/2;
-          m_screenRectF.centerY = m_screenRectF.y + (m_screenRectF.h-1)/2;
-          return true;
+     if(m_focalRectF.x() < 0) offX = -m_focalRectF.x() * zoom;
+     if(m_focalRectF.y() < 0) offY = -m_focalRectF.y() * zoom;
+     QRectF temp = m_imageRectF.intersected(m_focalRectF);
+     if(temp.isValid()){
+        m_intersectRectF.setRect(temp.x(),temp.y(),temp.width(),temp.height());
+        m_screenRectF.setRect(offX,offY,m_intersectRectF.width()*zoom,m_intersectRectF.height()*zoom);
+        return true;
      }
      else{
-          m_intersectRectF.zeroRect();
-          m_screenRectF.zeroRect();
-          return false;
+        m_intersectRectF.setRect(0,0,0,0);
+        m_screenRectF.setRect(0,0,0,0);
+        return false;
      }
 
 }
 
 void ViewArea::setFocalRect()
 {
-    qreal cx = m_focalRectF.centerX;
-    qreal cy = m_focalRectF.centerY;
-    m_focalRectF.x = m_focalRectF.y = 0;
-    m_focalRectF.w = parentWidget()->width()/zoom;
-    m_focalRectF.h = parentWidget()->height()/zoom;
-    m_focalRectF.x2 = m_focalRectF.w-1;
-    m_focalRectF.y2 = m_focalRectF.h-1;
-    m_focalRectF.centerX = m_focalRectF.x2/2;
-    m_focalRectF.centerY = m_focalRectF.y2/2;
-    m_focalRectF.moveRectC(cx,cy);
+    QPointF c = m_focalRectF.center();
+    m_focalRectF.setRect(0,0,parentWidget()->width()/zoom,parentWidget()->height()/zoom);
+    m_focalRectF.moveCenter(c);
 }
 

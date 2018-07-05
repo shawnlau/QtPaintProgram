@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <QResizeEvent>
 #include <QApplication>
-#include "myrectanglef.h"
+#include <QRectF>
 #include "viewarea.h"
 MyCanvas::MyCanvas(QWidget *parent) : QWidget(parent)
 {
@@ -16,15 +16,15 @@ MyCanvas::MyCanvas(QWidget *parent) : QWidget(parent)
 }
 void MyCanvas::paintEvent(QPaintEvent *event){
     QPainter painter(this);
-    MyRectangleF iRect = m_view->intersectRect();
-    if(!iRect.isZero()){
-        MyRectangleF sRect = m_view->screenRect();
-        QImage *temp = new QImage(m_mainImage->copy((int)iRect.x,(int)iRect.y,(int)iRect.w,(int)iRect.h));
+    QRect iRect = m_view->intersectRect();
+    if(iRect.isValid()){
+        QRect sRect = m_view->screenRect();
+        QImage *temp = new QImage(m_mainImage->copy(iRect));
         if(mode == DRAG)
-            m_displayImage = new QImage(temp->scaled((int)sRect.w,(int)sRect.h,Qt::IgnoreAspectRatio,Qt::FastTransformation));
+            m_displayImage = new QImage(temp->scaled(sRect.size(),Qt::IgnoreAspectRatio,Qt::FastTransformation));
         else
-            m_displayImage = new QImage(temp->scaled((int)sRect.w,(int)sRect.h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-        painter.drawImage((int)sRect.x,(int)sRect.y,*m_displayImage);
+            m_displayImage = new QImage(temp->scaled(sRect.size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+        painter.drawImage(sRect.x(),sRect.y(),*m_displayImage);
         delete temp;
     }
 

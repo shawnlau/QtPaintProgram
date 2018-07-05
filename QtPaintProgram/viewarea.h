@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <QWidget>
-#include "myrectanglef.h"
+#include <QRectF>
+//#include "myrectanglef.h"
 class MyCanvas;
 class ViewArea : public QWidget
 {
@@ -11,8 +12,8 @@ class ViewArea : public QWidget
 public:
     const static int ZOOM1x = 12;
     explicit ViewArea(QWidget *parent = nullptr,int mw =0, int mh = 0);
-    MyRectangleF intersectRect();
-    MyRectangleF screenRect();
+    QRect intersectRect();
+    QRect screenRect();
     void zoomIn();
     void zoomOut();
     void zoomToFit();
@@ -25,10 +26,10 @@ signals:
 public slots:
     void changeScreenSize();
 private:
-    MyRectangleF m_imageRectF;
-    MyRectangleF m_focalRectF;
-    MyRectangleF m_intersectRectF;
-    MyRectangleF m_screenRectF;
+    QRectF m_imageRectF;
+    QRectF m_focalRectF;
+    QRectF m_intersectRectF;
+    QRectF m_screenRectF;
     int iWidth;
     int iHeight;
     int imouseX;
