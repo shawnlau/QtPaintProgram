@@ -26,9 +26,10 @@ void MyCanvas::paintEvent(QPaintEvent *event){
             m_displayImage = new QImage(temp->scaled(sRect.size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
         painter.drawImage(sRect.x(),sRect.y(),*m_displayImage);
         delete temp;
+        delete m_displayImage;
     }
 
-    delete m_displayImage;
+
 }
 void MyCanvas::keyPressEvent(QKeyEvent *event)
 {
@@ -47,17 +48,7 @@ void MyCanvas::keyPressEvent(QKeyEvent *event)
                 QApplication::setOverrideCursor(Qt::OpenHandCursor);
                 m_keyHandled = true;
                 break;
-            case Qt::Key_F:
-                if(!static_cast<QWidget *>(parent())->isFullScreen())
-                    static_cast<QWidget *>(parent())->showFullScreen();
-                else
-                    static_cast<QWidget *>(parent())->showNormal();
-                break;
-            case Qt::Key_B:
-                update();
-                break;
         }
-
 
     }
 
@@ -128,6 +119,13 @@ QSize MyCanvas::windowSize(){
 void MyCanvas::zoomToFit()
 {
     m_view->zoomToFit();
+    update();
+}
+
+void MyCanvas::zoom100()
+{
+    m_view->zoom100();
+    update();
 }
 
 void MyCanvas::draw()

@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(m_exitAct,SIGNAL(triggered(bool)),this,SLOT(quit()));
     connect(m_fullScreenAct,SIGNAL(triggered(bool)),this,SLOT(fullScreen()));
     connect(m_toFitAct,SIGNAL(triggered(bool)),m_myCanvas,SLOT(zoomToFit()));
+    connect(m_100Act,SIGNAL(triggered(bool)),m_myCanvas,SLOT(zoom100()));
     m_fileMenu = new QMenu(tr("&File"), this);
     m_viewMenu = new QMenu(tr("&View"),this);
     m_fileMenu->addAction(m_openAct);
@@ -58,7 +59,4 @@ void MainWindow::fullScreen()
     }
 }
 
-void MainWindow::zoom100()
-{
 
-}

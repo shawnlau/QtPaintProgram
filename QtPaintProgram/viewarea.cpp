@@ -74,6 +74,14 @@ void ViewArea::zoomToFit()
 
 }
 
+void ViewArea::zoom100()
+{
+    zIndex = ZOOM1x;
+    zoom = zoomLevels[zIndex];
+    setFocalRect();
+    findScreenIntersections();
+}
+
 void ViewArea::move(int x, int y, int px, int py)
 {
     QPointF c;

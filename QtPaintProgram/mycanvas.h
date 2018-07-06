@@ -25,6 +25,7 @@ signals:
     void resize();
 public slots:
     void zoomToFit();
+    void zoom100();
 private:
     static const int DRAG = 0,DRAW = 1;
     ViewArea *m_view;

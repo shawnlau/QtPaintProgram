@@ -17,6 +17,7 @@ public:
     void zoomIn();
     void zoomOut();
     void zoomToFit();
+    void zoom100();
     void move(int x, int y, int px, int py);
     void center();
     void putZoom(int index);

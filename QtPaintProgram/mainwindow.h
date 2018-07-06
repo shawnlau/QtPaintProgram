@@ -16,8 +16,6 @@ public slots:
     void open();
     void quit();
     void fullScreen();
-    void zoom100();
-
 private:
     MyCanvas *m_myCanvas;
     QMenu *m_fileMenu;
