@@ -1,4 +1,3 @@
-#include "mycanvas.h"
 #include <QPainter>
 #include <QSize>
 #include <QDebug>
@@ -7,11 +6,14 @@
 #include <QApplication>
 #include <QRectF>
 #include "viewarea.h"
+#include "mycanvas.h"
+#include "brush.h"
 MyCanvas::MyCanvas(QWidget *parent) : QWidget(parent)
 {
     m_mainImage = new QImage(800,800,QImage::Format_ARGB32);
     m_mainImage->fill(qRgb(255,255,255));
     m_view = new ViewArea(parent,800,800);
+    m_brush = new Brush(parent,20);
     connect(this,SIGNAL(resize()),m_view,SLOT(changeScreenSize()));
 }
 void MyCanvas::paintEvent(QPaintEvent *event){

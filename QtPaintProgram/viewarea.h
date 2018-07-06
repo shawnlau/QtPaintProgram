@@ -22,6 +22,9 @@ public:
     void center();
     void putZoom(int index);
 
+
+    QPoint imgMouse(QPoint p);
+
 signals:
 
 public slots:
@@ -41,6 +44,14 @@ private:
     int zIndex;
     bool findScreenIntersections();
     void setFocalRect();
+    inline void constrainWidth(int *n){
+        if(*n < 0) n= 0;
+        else if(*n > iWidth) *n= iWidth -1;
+    }
+    inline void constrainHeight(int *n){
+        if(*n < 0) n= 0;
+        else if(*n > iHeight) *n= iHeight -1;
+    }
 //    void setFocalRect();
 //    void setScreenRects();
 };

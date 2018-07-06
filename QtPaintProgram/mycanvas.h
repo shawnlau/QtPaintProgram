@@ -5,6 +5,8 @@
 #include <QImage>
 #include <functional>
 class ViewArea;
+class Brush;
+
 class MyCanvas : public QWidget
 {
     Q_OBJECT
@@ -29,6 +31,7 @@ public slots:
 private:
     static const int DRAG = 0,DRAW = 1;
     ViewArea *m_view;
+    Brush *m_brush;
 //    QWidget *p;
     QImage *m_mainImage;
     QImage *m_displayImage;

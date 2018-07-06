@@ -37,6 +37,15 @@ void ViewArea::putZoom(int index)
     setFocalRect();
     findScreenIntersections();
 }
+
+QPoint ViewArea::imgMouse(QPoint p)
+{
+    int x = (int)(m_focalRectF.x() +(qreal)p.x()/zoom +0.5);
+    constrainWidth(&x);
+    int y = (int)(m_focalRectF.y() +(qreal)p.y()/zoom +0.5);
+    constrainHeight(&x);
+    return QPoint(x,y);
+}
 void ViewArea::zoomIn()
 {
 
