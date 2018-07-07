@@ -18,7 +18,7 @@ public:
     void zoomOut();
     void zoomToFit();
     void zoom100();
-    void move(int x, int y, int px, int py);
+    void move(QPoint m, QPoint pm);
     void center();
     void putZoom(int index);
 
@@ -34,6 +34,10 @@ private:
     QRectF m_focalRectF;
     QRectF m_intersectRectF;
     QRectF m_screenRectF;
+    QRectF m_brushFocalRectF;
+    QRectF m_brushIntersectRectF;
+    QRectF m_brushScreenRectF;
+
     int iWidth;
     int iHeight;
     int imouseX;
@@ -44,6 +48,7 @@ private:
     int zIndex;
     bool findScreenIntersections();
     void setFocalRect();
+    void setBrushFocalRec(QSize s);
     inline void constrainWidth(int *n){
         if(*n < 0) n= 0;
         else if(*n > iWidth) *n= iWidth -1;

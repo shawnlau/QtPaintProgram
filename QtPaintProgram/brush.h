@@ -10,9 +10,7 @@ public:
     explicit Brush(QWidget *parent = nullptr);
     Brush(QWidget *parent, int size);
     Brush(QWidget *parent, int size, QImage head);
-    int m_R = 0;
-    int m_G = 0;
-    int m_B = 0;
+    friend class MyCanvas;
 
 signals:
 
@@ -21,9 +19,11 @@ private:
     QImage *m_brush = nullptr;
     QImage *m_brushHead = nullptr;
     int m_size;
-    qreal m_spacing;
-    qreal m_trans;
-
+    float m_spacing;
+    float m_trans = 0.5;
+    int m_R = 0;
+    int m_G = 0;
+    int m_B = 0;
     void setBrushSize(int size);
 };
 

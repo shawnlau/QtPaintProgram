@@ -25,7 +25,8 @@ private:
     QAction *m_fullScreenAct;
     QAction *m_toFitAct;
     QAction *m_100Act;
-
+    Qt::WindowState m_state = Qt::WindowNoState;
+    Qt::WindowState m_prevState = Qt::WindowNoState;
 };
 
 #endif // MAINWINDOW_H

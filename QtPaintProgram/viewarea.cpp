@@ -46,6 +46,7 @@ QPoint ViewArea::imgMouse(QPoint p)
     constrainHeight(&x);
     return QPoint(x,y);
 }
+
 void ViewArea::zoomIn()
 {
 
@@ -91,11 +92,12 @@ void ViewArea::zoom100()
     findScreenIntersections();
 }
 
-void ViewArea::move(int x, int y, int px, int py)
+void ViewArea::move(QPoint m, QPoint pm)
 {
+
     QPointF c;
-    c.setX(m_focalRectF.center().x() - (x-px)/zoom );
-    c.setY(m_focalRectF.center().y() - (y-py)/zoom );
+    c.setX(m_focalRectF.center().x() - (m.x()-pm.x())/zoom );
+    c.setY(m_focalRectF.center().y() - (m.y()-pm.y())/zoom );
     m_focalRectF.moveCenter(c);
     findScreenIntersections();
 }
@@ -130,4 +132,10 @@ void ViewArea::setFocalRect()
     m_focalRectF.setRect(0,0,parentWidget()->width()/zoom,parentWidget()->height()/zoom);
     m_focalRectF.moveCenter(c);
 }
+
+void ViewArea::setBrushFocalRec(QSize s)
+{
+    m_brushFocalRectF.setRect(0,0,s.width()+5,s.height()+5);
+}
+
 

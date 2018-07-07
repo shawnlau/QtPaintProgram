@@ -49,14 +49,22 @@ void MainWindow::quit(){
 
 void MainWindow::fullScreen()
 {
-    if(!isFullScreen()){
-        m_fullScreenAct->setText(tr("&Windowed view"));
-        showFullScreen();
-     }
-    else{
+    if(windowState()==Qt::WindowFullScreen){
+        m_state = m_prevState;
+        setWindowState(m_state);
         m_fullScreenAct->setText(tr("&Full Screen"));
-        showNormal();
     }
+    else if(windowState()==Qt::WindowMaximized){
+        m_prevState = Qt::WindowMaximized;
+        setWindowState(Qt::WindowFullScreen);
+        m_fullScreenAct->setText(tr("&Windowed view"));
+    }
+    else if(windowState() ==Qt::WindowNoState){
+        m_prevState = Qt::WindowNoState;
+        setWindowState(Qt::WindowFullScreen);
+        m_fullScreenAct->setText(tr("&Windowed view"));
+    }
+
 }
 
 

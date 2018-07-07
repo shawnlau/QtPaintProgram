@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QImage>
 #include <functional>
+#include <QPoint>
 class ViewArea;
 class Brush;
 
@@ -32,18 +33,23 @@ private:
     static const int DRAG = 0,DRAW = 1;
     ViewArea *m_view;
     Brush *m_brush;
-//    QWidget *p;
     QImage *m_mainImage;
     QImage *m_displayImage;
+    float *m_floatArrayR;
+    float *m_floatArrayG;
+    float *m_floatArrayB;
     Qt::CursorShape m_cursor = Qt::ArrowCursor;
     Qt::CursorShape m_previousCursor = m_cursor;
     bool m_keyHandled = false;
-    int prevX = -1,prevY = -1;
-    int mouseX,mouseY;
+    QPoint m_prevMouse,m_mouse;
+    QPoint m_prevImouse,m_iMouse;
+    float m_leftOverDistance;
+    bool posInWindow(QPoint p);
     void dragScreen();
     void draw();
-    std::function<void(MyCanvas*) > action[2]= {&MyCanvas::dragScreen,&MyCanvas::draw};
-    int mode = DRAW;
-    int prevMode = DRAW;
+    void loadFloatArrays();
+    std::function<void(MyCanvas*) > m_action[2]= {&MyCanvas::dragScreen,&MyCanvas::draw};
+    int m_mode = DRAW;
+    int m_prevMode = DRAW;
 };
 #endif // MYCANVAS_H
